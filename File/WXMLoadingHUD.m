@@ -72,6 +72,8 @@
 
 /** 设置不同的界面 */
 - (void)setDifferentInterfaces {
+    
+    self.contentView.layer.cornerRadius = WXMLoadingRounded;
     self.frame = (CGRect) { CGPointZero, self.displayView.frame.size };
     if (self.interactionType == WXMLoadingInteractionDefault) {
         self.userInteractionEnabled = NO;
@@ -96,14 +98,17 @@
     /** 菊花 */
     [self.contentView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     if (self.loadingType == WXMLoadingTypeLoading) {
+        
         self.contentView.frame = (CGRect) { CGPointZero, WXMLoadSize };
         [self.contentView addSubview:self.indicatorView];
         
     /** 提示 */
     } else if (self.loadingType == WXMLoadingTypeMessage) {
+        
         self.messageLabel.text = self.contontMessage;
         self.contentView.frame = (CGRect) { CGPointZero, self.getMessageSize };
         [self.contentView addSubview:self.messageLabel];
+        self.contentView.layer.cornerRadius = WXMLoadingRounded - 2;
         
     /** 成功失败 */
     } else if (self.loadingType == WXMLoadingTypeSuccess ||
@@ -133,10 +138,13 @@
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:sel object:nil];
     if (self.loadingType == WXMLoadingTypeLoading) {
     } else if (self.loadingType == WXMLoadingTypeMessage) {
+        [self reductionOfGestures];
         [self performSelector:sel withObject:nil afterDelay:WXMHiddenDelay];
     } else if (self.loadingType == WXMLoadingTypeSuccess) {
+        [self reductionOfGestures];
         [self performSelector:sel withObject:nil afterDelay:WXMHiddenDelay];
     } else if (self.loadingType == WXMLoadingTypeFail) {
+        [self reductionOfGestures];
         [self performSelector:sel withObject:nil afterDelay:WXMHiddenDelay];
     }
 }
@@ -171,9 +179,18 @@
 
 /** 消失 */
 - (void)hiddenInSupView {
+    [self reductionOfGestures];
+    [self removeFromSuperview];
+}
+
+/** 还原手势 */
+- (void)reductionOfGestures {
     self.displayViewController.navigationController.
     interactivePopGestureRecognizer.enabled = self.lastPopGesture;
-    [self removeFromSuperview];
+    if ([self.displayViewController isKindOfClass:[UINavigationController class]]) {
+        UINavigationController *nav = (UINavigationController *)self.displayViewController;
+        nav.interactivePopGestureRecognizer.enabled = self.lastPopGesture;
+    }
 }
 
 - (void)hiddenInSupViewWithType {
@@ -244,7 +261,7 @@
 - (UIView *)contentView {
     if (!_contentView) {
         _contentView = [[UIView alloc] initWithFrame:CGRectZero];
-        _contentView.backgroundColor = [WXMLoadingBackColor colorWithAlphaComponent:.85];
+        _contentView.backgroundColor = WXMLoadingBackColor;
         _contentView.layer.cornerRadius = WXMLoadingRounded;
         _contentView.layer.masksToBounds = YES;
     }

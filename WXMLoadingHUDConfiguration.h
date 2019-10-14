@@ -25,13 +25,13 @@
 #define WXMAnimationChange YES
 
 /** 隐藏时间 */
-#define WXMHiddenDelay 3.5f
+#define WXMHiddenDelay 4.0f
 
 /** 字体 */
-#define WXMLoadFont [UIFont systemFontOfSize:15.5]
+#define WXMLoadFont [UIFont systemFontOfSize:16]
 
 /** tag */
-#define WXMLoadingTag 102000
+#define WXMLoadingTag 10555
 
 /** 垂直偏移 */
 #define WXMLoadingMargin -10
@@ -40,7 +40,7 @@
 #define WXMLoadingOutsideMargin 40
 
 /** 内边距 */
-#define WXMLoadingpadMargin 20
+#define WXMLoadingpadMargin 18
 
 /** 圆角 */
 #define WXMLoadingRounded 12
@@ -58,7 +58,7 @@
 #define WXMLoadingFullColor [UIColor whiteColor]
 
 /** 背景色 */
-#define WXMLoadingBackColor UIColor.blackColor
+#define WXMLoadingBackColor [[UIColor blackColor] colorWithAlphaComponent:0.90]
 
 
 #endif /* WXMLoadingHUDConfiguration_h */
