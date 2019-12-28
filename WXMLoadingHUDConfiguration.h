@@ -43,7 +43,7 @@
 #define WXMLoadingpadMargin 17
 
 /** 圆角 */
-#define WXMLoadingRounded 12
+#define WXMLoadingRounded 11
 
 /** 导航偏移 */
 #define WXMLoadingNavigationOff 8
@@ -58,7 +58,7 @@
 #define WXMLoadingFullColor [UIColor whiteColor]
 
 /** 背景色 */
-#define WXMLoadingBackColor [[UIColor blackColor] colorWithAlphaComponent:0.75]
+#define WXMLoadingBackColor [[UIColor blackColor] colorWithAlphaComponent:0.85]
 
 
 #endif /* WXMLoadingHUDConfiguration_h */
