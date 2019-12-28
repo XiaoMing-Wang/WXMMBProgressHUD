@@ -24,10 +24,19 @@ NS_ASSUME_NONNULL_BEGIN
 /** 禁止界面和手势 */
 - (void)showLoadingView_forbid;
 
-/** message */
-- (void)showLoadingMessage:(NSString *)message;
+/** 菊花 + 内容 */
+- (void)showLoadingMessage:(NSString *)message;;
+
+/** 内容 */
+- (void)showMessage:(NSString *)message;
+
+/** 成功 */
 - (void)showSuccessMessage:(NSString *_Nullable)message;
+
+/** 失败 */
 - (void)showFailMessage:(NSString *_Nullable)message;
+
+
 - (void)hiddenLoadingView;
 @end
 

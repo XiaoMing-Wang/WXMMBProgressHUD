@@ -28,7 +28,7 @@
 #define WXMHiddenDelay 4.0f
 
 /** 字体 */
-#define WXMLoadFont [UIFont systemFontOfSize:16]
+#define WXMLoadFont [UIFont systemFontOfSize:15]
 
 /** tag */
 #define WXMLoadingTag 10555
@@ -40,7 +40,7 @@
 #define WXMLoadingOutsideMargin 40
 
 /** 内边距 */
-#define WXMLoadingpadMargin 18
+#define WXMLoadingpadMargin 17
 
 /** 圆角 */
 #define WXMLoadingRounded 12
@@ -58,7 +58,7 @@
 #define WXMLoadingFullColor [UIColor whiteColor]
 
 /** 背景色 */
-#define WXMLoadingBackColor [[UIColor blackColor] colorWithAlphaComponent:0.90]
+#define WXMLoadingBackColor [[UIColor blackColor] colorWithAlphaComponent:0.75]
 
 
 #endif /* WXMLoadingHUDConfiguration_h */

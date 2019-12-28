@@ -57,8 +57,20 @@
                           hiddenDelay:0];
 }
 
-/** 提示 */
+/** 菊花 + 内容 */
 - (void)showLoadingMessage:(NSString *)message {
+    if (WXMCurrentController) [WXMLoadingHUD hiddenLoadingWithSup:self.navigationController];
+    [WXMLoadingHUD showLoadingWithSup:self
+                          loadingType:WXMLoadingTypeLoadingMessage
+                      interactionType:WXMLoadingInteractionNoEnabled
+                       contontMessage:message
+                        contontMargin:WXMLoadingMargin
+                          hiddenDelay:0];
+    
+}
+
+/** 提示 */
+- (void)showMessage:(NSString *)message {
     [WXMLoadingHUD showLoadingWithSup:self.navigationController
                           loadingType:WXMLoadingTypeMessage
                       interactionType:WXMLoadingInteractionDefault

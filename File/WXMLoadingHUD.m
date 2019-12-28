@@ -19,7 +19,7 @@
 @property (nonatomic, strong) UIImageView *iconImageView;
 @property (nonatomic, strong) UIActivityIndicatorView *indicatorView;
 
-/**  */
+/** 内容 */
 @property (nonatomic, copy) NSString *contontMessage;
 
 /** 垂直偏移 */
@@ -101,8 +101,24 @@
         
         self.contentView.frame = (CGRect) { CGPointZero, WXMLoadSize };
         [self.contentView addSubview:self.indicatorView];
+        self.contentView.layer.cornerRadius = WXMLoadingRounded;
         
-    /** 提示 */
+    /** 菊花+提示 */
+    } else if (self.loadingType == WXMLoadingTypeLoadingMessage) {
+        
+        CGFloat width = WXMLSWidth - (2 * WXMLoadingOutsideMargin) - (2 * WXMLoadingpadMargin);
+        self.messageLabel.text = self.contontMessage;
+        self.messageLabel.frame = CGRectMake(0, 0, width, 0);
+        [self.messageLabel sizeToFit];
+        CGFloat realW = MAX(76.5,self.messageLabel.frame.size.width + WXMLoadingpadMargin *2);
+        CGFloat realH = WXMLoadSize.height + self.messageLabel.frame.size.height;
+        CGSize contentSize = CGSizeMake(realW, realH);
+        self.contentView.frame = (CGRect) { CGPointZero, contentSize};
+        [self.contentView addSubview:self.indicatorView];
+        [self.contentView addSubview:self.messageLabel];
+        self.contentView.layer.cornerRadius = WXMLoadingRounded;
+        
+    /** 提示  */
     } else if (self.loadingType == WXMLoadingTypeMessage) {
         
         self.messageLabel.text = self.contontMessage;
@@ -136,7 +152,8 @@
 - (void)setDifferentConfiguration {
     SEL sel = @selector(hiddenInSupViewWithType);
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:sel object:nil];
-    if (self.loadingType == WXMLoadingTypeLoading) {
+    if (self.loadingType == WXMLoadingTypeLoading ||
+        self.loadingType == WXMLoadingTypeLoadingMessage) {
     } else if (self.loadingType == WXMLoadingTypeMessage) {
         [self reductionOfGestures];
         [self performSelector:sel withObject:nil afterDelay:WXMHiddenDelay];
@@ -162,11 +179,12 @@
         self.messageLabel.center = CGPointMake(cX, cY);
     } else {
         CGFloat x = (self.contentView.frame.size.width - WXMLoadIconSize.width) / 2;
-        CGPoint oringin = CGPointMake(x, WXMLoadingpadMargin - 3);
+        CGPoint oringin = CGPointMake(x, WXMLoadingpadMargin);
         self.iconImageView.frame = (CGRect) {oringin, WXMLoadIconSize};
+        self.indicatorView.frame = (CGRect) {oringin, WXMLoadIconSize};
         
         CGFloat top = self.iconImageView.frame.origin.y + self.iconImageView.frame.size.height;
-        CGPoint oringinMess = CGPointMake(0, top + 10);
+        CGPoint oringinMess = CGPointMake(0, top + 9.5);
         self.messageLabel.frame = (CGRect) {oringinMess, self.messageLabel.frame.size};
         self.messageLabel.center = CGPointMake(cX, self.messageLabel.center.y);
     }
@@ -201,6 +219,11 @@
 /** 获取文字的大size */
 - (CGSize)getMessageSize {
     if (self.messageLabel.text.length == 0) return CGSizeZero;
+    
+    CGRect oldRect = self.messageLabel.frame;
+    oldRect.size.width = WXMLSWidth - (2 * WXMLoadingOutsideMargin) - (2 * WXMLoadingpadMargin);
+    
+    self.messageLabel.frame = oldRect;
     [self.messageLabel sizeToFit];
     
     CGSize size = self.messageLabel.frame.size;
@@ -222,7 +245,7 @@
 - (CGSize)getSuccessOrFailSize {
     CGSize messageSize = self.getMessageSize;
     if (CGSizeEqualToSize(messageSize, CGSizeZero)) return WXMLoadSize;
-    if (self.contontMessage.length <= 8) return WXMLoadStatusSize;
+    if (self.contontMessage.length <= 4) return WXMLoadStatusSize;
     CGFloat width = messageSize.width;
     CGFloat height = messageSize.height;
     if (width < WXMLoadStatusSize.width) width = WXMLoadStatusSize.width;
@@ -270,7 +293,7 @@
 
 - (UILabel *)messageLabel {
     if (!_messageLabel) {
-        CGFloat width = WXMLSWidth - (2 * WXMLoadingOutsideMargin) - 2 * WXMLoadingpadMargin;
+        CGFloat width = WXMLSWidth - (2 * WXMLoadingOutsideMargin) - (2 * WXMLoadingpadMargin);
         _messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, width, 0)];
         _messageLabel.textAlignment = NSTextAlignmentLeft;
         _messageLabel.font = WXMLoadFont;
