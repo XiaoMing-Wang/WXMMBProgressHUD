@@ -168,8 +168,14 @@
 
 /** 显示在中心 */
 - (void)displayCenter:(BOOL)inCenter {
-    CGFloat x = self.frame.size.width / 2;
-    CGFloat y = self.frame.size.height / 2;
+    CGFloat kWidth = [UIScreen mainScreen].bounds.size.width;
+    CGFloat kHeight = [UIScreen mainScreen].bounds.size.height;
+    CGFloat width = self.frame.size.width;
+    CGFloat height = self.frame.size.height;
+    if (width > kWidth) width = kWidth;
+    if (height > kHeight) height = kHeight;
+    CGFloat x = width / 2.0;
+    CGFloat y = height / 2.0;
     self.contentView.center = CGPointMake(x, y + self.contontMargin);
     
     CGFloat cX = self.contentView.frame.size.width / 2;
