@@ -18,8 +18,6 @@
 @property (nonatomic, strong) UILabel *messageLabel;
 @property (nonatomic, strong) UIImageView *iconImageView;
 @property (nonatomic, strong) UIActivityIndicatorView *indicatorView;
-
-/**  */
 @property (nonatomic, copy) NSString *contontMessage;
 
 /** 垂直偏移 */
@@ -251,7 +249,7 @@
 - (UIActivityIndicatorView *)indicatorView {
     if (!_indicatorView) {
         _indicatorView = [[UIActivityIndicatorView alloc] init];
-        _indicatorView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
+        _indicatorView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleLarge;
         _indicatorView.hidesWhenStopped = NO;
         [_indicatorView startAnimating];
     }
