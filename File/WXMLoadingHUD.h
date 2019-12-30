@@ -34,6 +34,9 @@ typedef NS_ENUM(NSUInteger, WXMLoadingType) {
     /** 提示 */
     WXMLoadingTypeMessage,
     
+    /** 菊花+提示 */
+    WXMLoadingTypeLoadingMessage,
+    
     /** 成功 */
     WXMLoadingTypeSuccess,
     
