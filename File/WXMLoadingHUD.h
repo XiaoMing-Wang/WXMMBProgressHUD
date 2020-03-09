@@ -55,16 +55,28 @@ typedef NS_ENUM(NSUInteger, WXMLoadingType) {
 /** 延迟时间 */
 @property (nonatomic, assign) CGFloat hiddenDelay;
 
+/** 是否显示在导航栏上 */
+@property (nonatomic, assign) BOOL displayNavigation;
 
+/// 显示hud
+/// @param supMedium 父类视图 view/vc
+/// @param loadingType hud类型
+/// @param interactionType 响应类型
+/// @param message message
+/// @param contontMargin 垂直偏移
+/// @param hiddenDelay 延迟消失 WXMLoadingTypeSuccess/Fail WXMLoadingTypeMessage才有效
 + (void)showLoadingWithSup:(id)supMedium
                loadingType:(WXMLoadingType)loadingType
            interactionType:(WXMLoadingInteractionType)interactionType
-            contontMessage:(NSString * _Nullable)message
+            contontMessage:(NSString *_Nullable)message
              contontMargin:(CGFloat)contontMargin
                hiddenDelay:(CGFloat)hiddenDelay;
 
 + (void)hiddenLoadingWithSup:(id)supMedium;
+
+/** 是否导航控制器上有菊花转圈 */
 + (BOOL)isLoadingWithSup:(id)supMedium;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -12,6 +12,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UIViewController (WXMLoadingHUD)
 
+#pragma mark 显示在viewcontroller上
+#pragma mark 显示在viewcontroller上
+#pragma mark 显示在viewcontroller上
+
 /** 普通 */
 - (void)showLoadingView;
 
@@ -24,20 +28,25 @@ NS_ASSUME_NONNULL_BEGIN
 /** 禁止界面和手势 */
 - (void)showLoadingView_forbid;
 
-/** 菊花 + 内容 */
-- (void)showLoadingMessage:(NSString *)message;;
+/** 隐藏 */
+- (void)hiddenLoadingView;
 
-/** 内容 */
+/** 菊花 + 内容 */
+- (void)showLoadingMessage:(NSString *)message;
+
+#pragma mark 显示在导航控制器上
+#pragma mark 显示在导航控制器上
+#pragma mark 显示在导航控制器上
+
+/** 内容 持续时间WXMHiddenDelay */
 - (void)showMessage:(NSString *)message;
 
-/** 成功 */
+/** 成功 持续时间WXMHiddenDelay */
 - (void)showSuccessMessage:(NSString *_Nullable)message;
 
-/** 失败 */
+/** 失败 持续时间WXMHiddenDelay */
 - (void)showFailMessage:(NSString *_Nullable)message;
 
-
-- (void)hiddenLoadingView;
 @end
 
 NS_ASSUME_NONNULL_END

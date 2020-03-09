@@ -13,7 +13,6 @@
 #pragma mark UI
 @property (nonatomic, weak) UIView *displayView;
 @property (nonatomic, weak) UIViewController *displayViewController;
-
 @property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) UILabel *messageLabel;
 @property (nonatomic, strong) UIImageView *iconImageView;
@@ -42,8 +41,17 @@
     WXMLoadingHUD *currentLoading = [self currentLoading:supMedium];
     UIView *displayView = [WXMLoadingHUD supViewSupMedium:supMedium];
     if (!currentLoading) currentLoading = [[WXMLoadingHUD alloc] init];
-    if ([supMedium isKindOfClass:UIViewController.class]) {
+    
+    /** 记录显示的控制器 */
+    currentLoading.displayViewController = nil;
+    if ([supMedium isKindOfClass:[UIViewController class]]) {
         currentLoading.displayViewController = (UIViewController *)supMedium;
+    }
+    
+    /** 判断是否显示在导航栏上 */
+    currentLoading.displayNavigation = NO;
+    if ([supMedium isKindOfClass:[UINavigationController class]]) {
+        currentLoading.displayNavigation = YES;
     }
     
     currentLoading.tag = WXMLoadingTag;
@@ -60,13 +68,19 @@
 + (void)hiddenLoadingWithSup:(id)supMedium {
     if (supMedium == nil) return;
     WXMLoadingHUD *currentLoading = [self currentLoading:supMedium];
-    [currentLoading hiddenInSupView];
+    if ([supMedium isKindOfClass:[UINavigationController class]]) {
+        if (currentLoading.displayNavigation) [currentLoading hiddenInSupView];
+    } else {
+        [currentLoading hiddenInSupView];
+    }
 }
 
+/** 是否导航控制器上有菊花转圈 */
 + (BOOL)isLoadingWithSup:(id)supMedium {
     if (supMedium == nil) return NO;
     WXMLoadingHUD *currentLoading = [self currentLoading:supMedium];
     if (currentLoading == nil) return NO;
+    if (currentLoading.displayNavigation == NO) return NO;
     return (currentLoading.loadingType == WXMLoadingTypeLoading);
 }
 
@@ -124,7 +138,7 @@
         self.messageLabel.text = self.contontMessage;
         self.contentView.frame = (CGRect) { CGPointZero, self.getMessageSize };
         [self.contentView addSubview:self.messageLabel];
-        self.contentView.layer.cornerRadius = WXMLoadingRounded - 2;
+        self.contentView.layer.cornerRadius = WXMLoadingRounded - 4;
         
     /** 成功失败 */
     } else if (self.loadingType == WXMLoadingTypeSuccess ||
@@ -156,13 +170,13 @@
         self.loadingType == WXMLoadingTypeLoadingMessage) {
     } else if (self.loadingType == WXMLoadingTypeMessage) {
         [self reductionOfGestures];
-        [self performSelector:sel withObject:nil afterDelay:WXMHiddenDelay];
+        [self performSelector:sel withObject:nil afterDelay:self.hiddenDelay ?: WXMHiddenDelay];
     } else if (self.loadingType == WXMLoadingTypeSuccess) {
         [self reductionOfGestures];
-        [self performSelector:sel withObject:nil afterDelay:WXMHiddenDelay];
+        [self performSelector:sel withObject:nil afterDelay:self.hiddenDelay ?: WXMHiddenDelay];
     } else if (self.loadingType == WXMLoadingTypeFail) {
         [self reductionOfGestures];
-        [self performSelector:sel withObject:nil afterDelay:WXMHiddenDelay];
+        [self performSelector:sel withObject:nil afterDelay:self.hiddenDelay ?: WXMHiddenDelay];
     }
 }
 
@@ -239,7 +253,7 @@
     CGFloat padding = WXMLoadingpadMargin * 2;
     
     /** 宽度  */
-    CGFloat width = MIN(maxWidth, size.width + padding);
+    CGFloat width = MIN(maxWidth, size.width + padding + 10);
     
     /** 高度 */
     CGFloat height = MAX(WXMLoadingMinHeight, size.height + padding);

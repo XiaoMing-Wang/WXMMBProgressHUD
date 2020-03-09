@@ -76,7 +76,7 @@
                       interactionType:WXMLoadingInteractionDefault
                        contontMessage:message
                         contontMargin:WXMLoadingMargin
-                          hiddenDelay:0];
+                          hiddenDelay:WXMHiddenDelay];
 }
 
 /** 成功 */
@@ -86,7 +86,7 @@
                       interactionType:WXMLoadingInteractionDefault
                        contontMessage:message
                         contontMargin:WXMLoadingMargin
-                          hiddenDelay:0];
+                          hiddenDelay:WXMHiddenDelay];
     
 }
 
@@ -97,7 +97,7 @@
                       interactionType:WXMLoadingInteractionDefault
                        contontMessage:message
                         contontMargin:WXMLoadingMargin
-                          hiddenDelay:0];
+                          hiddenDelay:WXMHiddenDelay];
     
 }
 
@@ -111,6 +111,7 @@
     [self swizzleInstanceMethod:method1 with:method2];
 }
 
+/** 出现的时候把导航栏上的菊花先隐藏掉 */
 - (void)__wxmloadingviewWillAppear:(BOOL)animated {
     [self __wxmloadingviewWillAppear:animated];
     if (![WXMLoadingHUD isLoadingWithSup:self]) return;
