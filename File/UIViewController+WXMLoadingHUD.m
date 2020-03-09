@@ -106,9 +106,9 @@
 }
 
 + (void)load {
-    SEL method1 = @selector(viewWillAppear:);
-    SEL method2 = @selector(__wxmloadingviewWillAppear:);
-    [self swizzleInstanceMethod:method1 with:method2];
+    Method method1 = class_getInstanceMethod(self, @selector(viewWillAppear:));
+    Method method2 = class_getInstanceMethod(self, @selector(__wxmloadingviewWillAppear:));
+    method_exchangeImplementations(method1, method2);
 }
 
 /** 出现的时候把导航栏上的菊花先隐藏掉 */
@@ -118,18 +118,4 @@
     [WXMLoadingHUD hiddenLoadingWithSup:self.navigationController];
 }
 
-/** -方法 */
-+ (BOOL)swizzleInstanceMethod:(SEL)originalSel with:(SEL)newSel {
-    Method original = class_getInstanceMethod(self, originalSel);
-    Method newMethod = class_getInstanceMethod(self, newSel);
-    if (!original || !newMethod) return NO;
-    
-    IMP originalImp = class_getMethodImplementation(self, originalSel);
-    IMP newMethodImp = class_getMethodImplementation(self, newSel);
-    class_addMethod(self, originalSel, originalImp, method_getTypeEncoding(original));
-    class_addMethod(self, newSel, newMethodImp, method_getTypeEncoding(newMethod));
-    method_exchangeImplementations(class_getInstanceMethod(self, originalSel),
-                                   class_getInstanceMethod(self, newSel));
-    return YES;
-}
 @end
