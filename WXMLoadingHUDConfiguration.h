@@ -28,28 +28,28 @@
 #define WXMHiddenDelay 4.0f
 
 /** 字体 */
-#define WXMLoadFont [UIFont systemFontOfSize:15]
+#define WXMLoadFont [UIFont systemFontOfSize:15.0]
 
 /** tag */
 #define WXMLoadingTag 10555
 
 /** 垂直偏移 */
-#define WXMLoadingMargin 0
+#define WXMLoadingMargin 0.0
 
 /** 外边距 */
-#define WXMLoadingOutsideMargin 40
+#define WXMLoadingOutsideMargin 40.0
 
 /** 内边距 */
-#define WXMLoadingpadMargin 17
+#define WXMLoadingpadMargin 17.0
 
 /** 圆角 */
-#define WXMLoadingRounded 11
+#define WXMLoadingRounded 11.0
 
 /** 导航偏移 */
-#define WXMLoadingNavigationOff 8
+#define WXMLoadingNavigationOff 8.0
 
 /** 最小高度 */
-#define WXMLoadingMinHeight 49
+#define WXMLoadingMinHeight 49.0
 
 /**  */
 #define WXMLSWidth [UIScreen mainScreen].bounds.size.width
@@ -58,7 +58,7 @@
 #define WXMLoadingFullColor [UIColor whiteColor]
 
 /** 背景色 */
-#define WXMLoadingBackColor [[UIColor blackColor] colorWithAlphaComponent:0.85]
+#define WXMLoadingBackColor [[UIColor blackColor] colorWithAlphaComponent:0.90]
 
 #define kLoadingIPhoneX \
 ({BOOL isPhoneX = NO;\
