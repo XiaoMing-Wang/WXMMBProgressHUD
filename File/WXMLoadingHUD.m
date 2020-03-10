@@ -26,6 +26,7 @@
 @property (nonatomic, assign) BOOL exsitBefore;
 @property (nonatomic, assign) BOOL needOffset;
 @property (nonatomic, assign) BOOL lastPopGesture;
+@property (nonatomic, assign) BOOL restoreGesture;
 @end
 
 @implementation WXMLoadingHUD
@@ -57,6 +58,7 @@
     currentLoading.tag = WXMLoadingTag;
     currentLoading.contontMessage = message.copy;
     currentLoading.displayView = displayView;
+    currentLoading.contontMargin = contontMargin;
     currentLoading.hiddenDelay = hiddenDelay;
     currentLoading.loadingType = loadingType;
     currentLoading.interactionType = interactionType;
@@ -86,9 +88,9 @@
 
 /** 设置不同的界面 */
 - (void)setDifferentInterfaces {
-    
     self.contentView.layer.cornerRadius = WXMLoadingRounded;
     self.frame = (CGRect) { CGPointZero, self.displayView.frame.size };
+        
     if (self.interactionType == WXMLoadingInteractionDefault) {
         self.userInteractionEnabled = NO;
         self.backgroundColor = [UIColor clearColor];
@@ -102,10 +104,14 @@
         self.userInteractionEnabled = YES;
         self.backgroundColor = [UIColor clearColor];
         
-        self.lastPopGesture = self.displayViewController.navigationController.
-        interactivePopGestureRecognizer.enabled;
-        self.displayViewController.navigationController.
-        interactivePopGestureRecognizer.enabled = NO;
+        /** 延迟是考虑其他位置设置了手势 */
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            self.restoreGesture = YES;
+            self.lastPopGesture = self.displayViewController.navigationController.
+            interactivePopGestureRecognizer.enabled;
+            self.displayViewController.navigationController.
+            interactivePopGestureRecognizer.enabled = NO;
+        });
     }
     
     
@@ -190,7 +196,13 @@
     if (height > kHeight) height = kHeight;
     CGFloat x = width / 2.0;
     CGFloat y = height / 2.0;
-    self.contentView.center = CGPointMake(x, y + self.contontMargin);
+    
+    if (self.displayNavigation) {
+        self.contentView.center = CGPointMake(x, y + self.contontMargin);
+    } else {
+        CGFloat offfy = (y + self.contontMargin) - (kLoadingIPhoneX ? 88 : 64);
+        self.contentView.center = CGPointMake(x, offfy);
+    }
     
     CGFloat cX = self.contentView.frame.size.width / 2;
     CGFloat cY = self.contentView.frame.size.height / 2;
@@ -212,17 +224,20 @@
 
 /** 显示 */
 - (void)showInSupView {
+    if (self.restoreGesture && self.loadingType != WXMLoadingTypeLoading) [self reductionOfGestures];
     [self.displayView addSubview:self];
 }
 
 /** 消失 */
 - (void)hiddenInSupView {
-    [self reductionOfGestures];
+    if (self.restoreGesture) [self reductionOfGestures];
     [self removeFromSuperview];
 }
 
 /** 还原手势 */
 - (void)reductionOfGestures {
+    if (!self.restoreGesture) return;
+    self.restoreGesture = NO;
     self.displayViewController.navigationController.
     interactivePopGestureRecognizer.enabled = self.lastPopGesture;
     if ([self.displayViewController isKindOfClass:[UINavigationController class]]) {

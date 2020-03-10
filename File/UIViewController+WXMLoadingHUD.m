@@ -71,6 +71,7 @@
 
 /** 提示 */
 - (void)showMessage:(NSString *)message {
+    if (self.navigationController.topViewController != self) return;
     [WXMLoadingHUD showLoadingWithSup:self.navigationController
                           loadingType:WXMLoadingTypeMessage
                       interactionType:WXMLoadingInteractionDefault
@@ -81,6 +82,7 @@
 
 /** 成功 */
 - (void)showSuccessMessage:(NSString * _Nullable)message {
+    if (self.navigationController.topViewController != self) return;
     [WXMLoadingHUD showLoadingWithSup:self.navigationController
                           loadingType:WXMLoadingTypeSuccess
                       interactionType:WXMLoadingInteractionDefault
@@ -92,6 +94,7 @@
 
 /** 失败 */
 - (void)showFailMessage:(NSString * _Nullable)message {
+    if (self.navigationController.topViewController != self) return;
     [WXMLoadingHUD showLoadingWithSup:self.navigationController
                           loadingType:WXMLoadingTypeFail
                       interactionType:WXMLoadingInteractionDefault

@@ -34,7 +34,7 @@
 #define WXMLoadingTag 10555
 
 /** 垂直偏移 */
-#define WXMLoadingMargin -10
+#define WXMLoadingMargin 0
 
 /** 外边距 */
 #define WXMLoadingOutsideMargin 40
@@ -60,5 +60,12 @@
 /** 背景色 */
 #define WXMLoadingBackColor [[UIColor blackColor] colorWithAlphaComponent:0.85]
 
+#define kLoadingIPhoneX \
+({BOOL isPhoneX = NO;\
+if (@available(iOS 11.0, *)) {\
+isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bottom > 0.0;\
+}\
+(isPhoneX);\
+})
 
 #endif /* WXMLoadingHUDConfiguration_h */
